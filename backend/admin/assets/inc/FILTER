@@ -1,0 +1,45 @@
+$dt_table = "td_user";
+    $arr_result = array();
+    $sql = "SELECT id,timestamp,first,last,company_name,company_size FROM td_user LIMIT $start_row , $limit";
+    $result = mysql_query($sql);
+    $tot_data = 0;
+
+
+    if($time_type == "today")
+    {
+        while($row = mysql_fetch_assoc($result))
+        {
+            $data_timestamp = $row['timestamp'];
+            $date = date('Y-m-d', $data_timestamp);
+            $today = date('Y-m-d');
+            if ($date == $today) 
+            {
+                $arr_result[] = $row;
+            }
+        }
+    }
+    else if($time_type == "yesterday")
+    {
+        while($row = mysql_fetch_assoc($result))
+        {
+            $data_timestamp = $row['timestamp'];
+            $midnightYes = strtotime("midnight yesterday");
+            $midnightToday = strtotime("midnight today");
+            if ($data_timestamp > $midnightToday) 
+            {
+                //today
+            } 
+            else if($data_timestamp > $midnightYes && $data_timestamp < $midnightToday) 
+            {
+                $arr_result[] = $row;
+            }
+        }
+    }
+    else if($time_type == "last_seven_day")
+    {
+
+    }
+    else if($time_type == "last_month")
+    {
+
+    }
